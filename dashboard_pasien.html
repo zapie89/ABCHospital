@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Dashboard Pasien - e-HMS</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      }
+
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background-color: #0a2240; /* biru tua gelap */
+        color: #0a2240;
+        display: flex;
+        flex-direction: column;
+        height: 100vh; /* Mengatur tinggi body agar 100% dari viewport */
+      }
+
+      /* Header dan navbar */
+      header {
+        background-color: #06203a; /* biru tua gelap */
+        color: #a9d7ff; /* putih kebiruan */
+        padding: 10px 40px;
+        display: flex;
+        align-items: center;
+        box-shadow: 0 2px 6px rgba(0, 60, 150, 0.8);
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        z-index: 1001;
+        gap: 12px;
+      }
+
+      .logo {
+        width: 40px;
+        height: 40px;
+        object-fit: contain;
+        user-select: none;
+        flex-shrink: 0;
+        border-radius: 4px;
+      }
+
+      .logo-text {
+        font-weight: 700;
+        font-size: 24px;
+        color: #4adfff;
+        user-select: none;
+        white-space: nowrap;
+      }
+
+      .header-title {
+        font-weight: 600;
+        font-size: 18px;
+        color: #aacfff;
+        opacity: 0.85;
+        user-select: none;
+        margin-left: auto;
+      }
+
+      nav {
+        background-color: #031627; /* biru tua gelap ekstra */
+        border-right: 1px solid #275baf; /* biru elektrik */
+        width: 250px;
+        height: 100vh;
+        position: fixed;
+        top: 0;
+        left: 0;
+        padding-top: 80px;
+        box-shadow: inset -2px 0 5px rgba(74, 223, 255, 0.3);
+        z-index: 1000;
+      }
+
+      nav ul {
+        list-style: none;
+        height: calc(100vh - 80px);
+        overflow-y: auto;
+        margin: 0;
+        padding: 0;
+      }
+
+      nav ul li {
+        padding: 16px 25px;
+        border-bottom: 1px solid #1a3a67;
+        cursor: pointer;
+        font-weight: 600;
+        font-size: 16px;
+        color: #82d5ff;
+        transition: background-color 0.25s ease, color 0.25s ease;
+        user-select: none;
+      }
+
+      nav ul li:hover,
+      nav ul li.active {
+        background-color: #4adfff; /* biru elektrik cerah */
+        color: #031627; /* teks gelap */
+        font-weight: 700;
+        box-shadow: 0 2px 10px rgba(74, 223, 255, 0.6);
+      }
+
+      /* Konten utama */
+      main {
+        margin-left: 220px;
+        padding: 130px 40px 20px 40px; /* Padding bawah dikurangi untuk memberi ruang footer */
+        max-width: 1200px;
+        flex-grow: 1; /* Mengisi ruang yang tersisa */
+        background-color: #fff; /* putih untuk area utama agar kontras */
+        color: #031627;
+        border-radius: 15px 0 0 15px;
+        box-shadow: 0 0 30px rgba(0, 110, 220, 0.25);
+        overflow-y: auto; /* Mengizinkan scroll jika konten overflow */
+      }
+
+      .section {
+        background-color: #d4e9ff; /* putih kebiruan lembut */
+        border-radius: 12px;
+        box-shadow: 0 6px 18px rgba(74, 223, 255, 0.3);
+        padding: 30px;
+        margin-bottom: 30px;
+        color: #003366;
+      }
+
+      .section h2 {
+        color: #007fff;
+        font-weight: 700;
+        margin-bottom: 20px;
+        letter-spacing: 0.75px;
+      }
+
+      /* Welcome section with background image */
+      .welcome {
+        position: relative;
+        background-image: url("hospital-image.jpg");
+        background-size: cover;
+        background-position: center;
+        border-radius: 15px;
+        padding: 80px 40px;
+        color: rgba(0, 221, 246, 0.988);
+        box-shadow: inset 0 0 70px rgba(0, 50, 100, 0.75);
+        text-align: center;
+        margin-bottom: 50px;
+        text-shadow: 0 3px 8px rgba(7, 6, 6, 0.821);
+      }
+
+      .welcome h2 {
+        font-size: 36px;
+        font-weight: 800;
+        margin-bottom: 15px;
+      }
+
+      .welcome p {
+        font-size: 20px;
+        font-weight: 500;
+        opacity: 0.9;
+      }
+
+      /* Table styling */
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 12px;
+        color: #01457e;
+      }
+
+      table th,
+      table td {
+        padding: 14px;
+        border: 1px solid #a2c4ff;
+        text-align: left;
+        font-size: 15px;
+      }
+
+      table th {
+        background-color: #007fff;
+        color: #eaf6ff;
+        font-weight: 700;
+      }
+
+      .btn {
+        padding: 12px 28px;
+        background-color: #14c3ff;
+        color: #031627;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-weight: 700;
+        font-size: 16px;
+        box-shadow: 0 6px 16px rgba(20, 195, 255, 0.65);
+        transition: background-color 0.3s ease, box-shadow 0.3s ease;
+        margin-top: 15px;
+        user-select: none;
+      }
+
+      .btn:hover {
+        background-color: #0b90d6;
+        box-shadow: 0 8px 24px rgba(11, 144, 214, 0.85);
+        color: #dbe7ff;
+      }
+
+      input,
+      select {
+        width: 100%;
+        padding: 12px;
+        margin: 10px 0;
+        border: 1.5px solid #169eee;
+        border-radius: 8px;
+        font-size: 15px;
+        color: #031627;
+        background-color: #a8dcff;
+        transition: border-color 0.3s ease, box-shadow 0.3s ease;
+      }
+
+      input:focus,
+      select:focus {
+        outline: none;
+        border-color: #14c3ff;
+        box-shadow: 0 0 10px #14c3ff;
+        background-color: #d0f0ff;
+      }
+
+      /* Footer fixed at bottom */
+      footer {
+        background-color: #06203a;
+        color: #7abfff;
+        font-weight: 600;
+        letter-spacing: 1px;
+        user-select: none;
+        text-align: center;
+        padding: 15px 20px;
+        position: fixed;
+        bottom: 0;
+        left: 220px;
+        width: calc(100% - 220px);
+        box-shadow: 0 -3px 10px rgba(0, 80, 180, 0.5);
+        z-index: 1005;
+      }
+
+      nav ul {
+        max-height: calc(100vh - 68px);
+        overflow-y: auto;
+        margin: 0;
+      }
+
+      /* Scrollbar for nav */
+      nav ul::-webkit-scrollbar {
+        width: 6px;
+      }
+
+      nav ul::-webkit-scrollbar-track {
+        background: #031627;
+      }
+
+      nav ul::-webkit-scrollbar-thumb {
+        background-color: #14c3ff;
+        border-radius: 3px;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <img src="abclogo.png" alt="Logo ABC Hospital" class="logo" />
+      <div class="logo-text">ABC Hospital</div>
+      <div class="header-title">Dashboard Pasien - e-HMS</div>
+    </header>
+
+    <nav>
+      <ul>
+        <li onclick="loadFeature('Home')" id="menu-home" class="active">
+          Home
+        </li>
+        <li onclick="loadFeature('Pendaftaran')" id="menu-pendaftaran">
+          Pendaftaran Online
+        </li>
+        <li onclick="loadFeature('Jadwal Dokter')" id="menu-jadwal">
+          Lihat Jadwal Dokter
+        </li>
+        <li onclick="loadFeature('Riwayat Kunjungan')" id="menu-riwayat">
+          Riwayat Kunjungan
+        </li>
+        <li onclick="loadFeature('Cetak Bukti')" id="menu-cetak">
+          Cetak Bukti Pendaftaran
+        </li>
+      </ul>
+    </nav>
+
+    <main id="main-content">
+      <div class="welcome">
+        <h2>Selamat Datang, Budi Santoso!</h2>
+        <p>Di Website ABC Hospital - Layanan Kesehatan yang Terpercaya</p>
+      </div>
+
+      <div
+        style="
+          text-align: center;
+          max-width: 800px;
+          margin: 0 auto;
+          padding: 20px;
+        "
+      >
+        <p>
+          Rumah Sakit ABC adalah pusat layanan kesehatan terpercaya yang
+          berkomitmen memberikan pelayanan medis yang unggul, cepat, dan ramah.
+          Dengan tenaga medis profesional, fasilitas lengkap, dan teknologi
+          modern, kami siap melayani kebutuhan kesehatan Anda dan keluarga.
+        </p>
+        <p>
+          Visi kami adalah menjadi rumah sakit pilihan utama masyarakat dengan
+          mengutamakan keselamatan dan kenyamanan pasien. Kami melayani berbagai
+          poli spesialis, laboratorium, unit gawat darurat 24 jam, dan layanan
+          rawat inap dengan standar mutu tinggi.
+        </p>
+      </div>
+    </main>
+
+    <footer>&copy; 2024 Rumah Sakit ABC - Semua Hak Dilindungi</footer>
+
+    <script>
+      function activateMenu(selectedId) {
+        document.querySelectorAll("nav ul li").forEach((item) => {
+          item.classList.remove("active");
+        });
+        const selected = document.getElementById(selectedId);
+        if (selected) selected.classList.add("active");
+      }
+
+      function loadFeature(feature) {
+        let content = "";
+        switch (feature) {
+          case "Home":
+            content = `
+                        <div class="welcome">
+                            <h2>Selamat Datang, Budi Santoso!</h2>
+                            <p>Di Website Rumah Sakit ABC - Layanan Kesehatan yang Terpercaya</p>
+                        </div>
+
+                        <div style="text-align: center; max-width: 800px; margin: 0 auto; padding: 20px;">
+                            <p>
+                                Rumah Sakit ABC adalah pusat layanan kesehatan terpercaya yang berkomitmen memberikan pelayanan medis yang unggul, cepat, dan ramah.
+                                Dengan tenaga medis profesional, fasilitas lengkap, dan teknologi modern, kami siap melayani kebutuhan kesehatan Anda dan keluarga.
+                            </p>
+                            <p>
+                                Visi kami adalah menjadi rumah sakit pilihan utama masyarakat dengan mengutamakan keselamatan dan kenyamanan pasien.
+                                Kami melayani berbagai poli spesialis, laboratorium, unit gawat darurat 24 jam, dan layanan rawat inap dengan standar mutu tinggi.
+                            </p>
+                        </div>
+                    `;
+            activateMenu("menu-home");
+            break;
+          case "Pendaftaran":
+            content = `
+                        <div class="section">
+                            <h2>Formulir Pendaftaran Online</h2>
+                            <form onsubmit="event.preventDefault(); alert('Pendaftaran berhasil!');">
+                                <label>Nama Lengkap</label>
+                                <input type="text" required>
+
+                                <label>NIK</label>
+                                <input type="text" required>
+
+                                <label>Pilih Poli</label>
+                                <select>
+                                    <option>Poli Umum</option>
+                                    <option>Poli Anak</option>
+                                    <option>Poli Gigi</option>
+                                </select>
+
+                                <label>Pilih Dokter</label>
+                                <select>
+                                    <option>Dr. Andi</option>
+                                    <option>Dr. Budi</option>
+                                    <option>Dr. Citra</option>
+                                </select>
+
+                                <label>Tanggal Kunjungan</label>
+                                <input type="date" required>
+
+                                <label>Jam</label>
+                                <input type="time" required>
+
+                                <button type="submit" class="btn">Daftar</button>
+                            </form>
+                        </div>
+                    `;
+            activateMenu("menu-pendaftaran");
+            break;
+          case "Jadwal Dokter":
+            content = `
+                        <div class="section">
+                            <h2>Jadwal Dokter</h2>
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Hari</th>
+                                        <th>Dokter</th>
+                                        <th>Poli</th>
+                                        <th>Jam</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Senin</td>
+                                        <td>Dr. Andi</td>
+                                        <td>Umum</td>
+                                        <td>08:00 - 12:00</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Selasa</td>
+                                        <td>Dr. Budi</td>
+                                        <td>Anak</td>
+                                        <td>09:00 - 13:00</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    `;
+            activateMenu("menu-jadwal");
+            break;
+          case "Riwayat Kunjungan":
+            content = `
+                        <div class="section">
+                            <h2>Riwayat Kunjungan</h2>
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Tanggal</th>
+                                        <th>Dokter</th>
+                                        <th>Poli</th>
+                                        <th>Diagnosa</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>2025-03-01</td>
+                                        <td>Dr. Andi</td>
+                                        <td>Umum</td>
+                                        <td>Demam</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    `;
+            activateMenu("menu-riwayat");
+            break;
+          case "Cetak Bukti":
+            content = `
+                        <div class="section">
+                            <h2>Bukti Pendaftaran</h2>
+                            <p>Nama: Budi Santoso</p>
+                            <p>Poli: Poli Gigi</p>
+                            <p>Dokter: Dr. Citra</p>
+                            <p>Tanggal: 2025-05-17</p>
+                            <p>Jam: 10:00</p>
+                            <button class="btn" onclick="window.print()">Cetak Bukti</button>
+                        </div>
+                    `;
+            activateMenu("menu-cetak");
+            break;
+          default:
+            content = `<div class="section"><p>Fitur belum tersedia.</p></div>`;
+            break;
+        }
+        document.getElementById("main-content").innerHTML = content;
+      }
+
+      window.onload = () => loadFeature("Home");
+    </script>
+  </body>
+</html>
